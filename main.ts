@@ -1,9 +1,19 @@
-import { Marketplace, Seller } from "./types & classes/types&classes";
+import { Buyer, Listing, Marketplace, Seller } from "./types & classes/types&classes";
 
 
 
 const myMarketplace = new Marketplace();
 console.log("Hello World!");
 console.log(Marketplace);
-const John = new Seller("John");
-console.log(John);
+
+const Sally = new Seller("Sally");
+console.log(Sally);
+const Bob = new Buyer("Bob");
+console.log(Bob);
+
+const List1 = new Listing("House 1");
+console.log(List1);
+const List2 = new Listing("House 2");
+console.log(List2);
+List2.publishListing();
+console.log(List2);
