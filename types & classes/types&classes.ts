@@ -28,37 +28,49 @@ export class Seller extends User{
 export class Buyer extends User{
 
     // Properties
-    myBids : []; // PENDING NEED TO IMPLEMENT BIDS TYPE
+    myBids : Bid[];
     totalSpent : number;
 
     // Constructor
-    constructor (userName : string) {
+    constructor (userName : string) { // Pending restricting duplicated usernames
         super(userName);
         this.myBids = [];
         this.totalSpent = 0;
     }
 
     // Methods
-    getTotalSpent(){
+    get showTotalSpent(){
         return this.totalSpent;
     }
 
-    getMyBids(){
+    get showMyBids(){
         return this.myBids;
     }
     // Test
+    bidOnListing (newBid : bigint, listingID : Listing) : boolean{
+        // If successfull, add to the Listing and to the buyer
+        // try
+
+        // listingID.addBid({}) //////////////////////////////////////////////////////////////
+
+        // The validation should be done in the listing
+        return true; // Success
+    }
+
+
 }
 
 
 type Bid = {
     bidAmount: bigint
-    bidder : Buyer
+    bidder : string
 };
 
 type State = "Draft" | "Active" | "Canceled";
 
 export class Listing {
     allBids : Bid[] = [];
+    maxBid : Bid;
     static amountOfLists : bigint = 0n; 
     private uniqueID : bigint;
     description : string;
@@ -71,6 +83,7 @@ export class Listing {
         this.uniqueID = Listing.amountOfLists;
         this.description = description;
         Listing.amountOfLists++;
+        this.maxBid = {bidAmount : 12n, bidder :  Bob.username};
         
     }
     get showUniqueID(){
@@ -82,7 +95,6 @@ export class Listing {
     set changeStartingPrice (newStartingPrice : bigint){
         this.startingPrice = newStartingPrice;
     }
-
     set changeDescription (description : string){
         this.description = description;
     }
@@ -90,7 +102,45 @@ export class Listing {
         return this.description;
     }
 
-    publishListing (){
+    addBid (newBid : Bid) : boolean { // Validate and add a new bid. // Pending to implement rejection message // Pending to add bid to bidder
+        if (this.isItHighestBid(newBid) && this.isTheirOnlyBid(newBid)){
+            this.allBids.push(newBid);
+            this.maxBid = newBid;
+            return true;
+        }
+        return false; 
+    }
+
+    isItHighestBid (newBid : Bid) : boolean { // Check if this is the highest bid
+        if (newBid.bidAmount > this.maxBid.bidAmount){        
+            return true;
+        }
+        else{ return false; }
+    }
+
+    isTheirOnlyBid (newBid : Bid) : boolean { // Go through the array and find if the new bidder has already bid.
+        let isOnly = false;
+        for (const el of this.allBids){
+            if (newBid.bidder == el.bidder){ isOnly = true; break;}
+        }
+        if (isOnly){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    removeBid () : Bid[] { // Need to add Input Parameters // Pending to Add Validation // Pending to remove bid from bidder
+        
+        return this.allBids;
+    }
+
+    get showAllBids () {
+        return this.allBids;
+    }
+
+    publishListing (){ // Need to add validation and complete all the states. 
         this.state = "Active";
     }
 }

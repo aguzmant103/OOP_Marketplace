@@ -17,3 +17,8 @@ const List2 = new Listing("House 2");
 console.log(List2);
 List2.publishListing();
 console.log(List2);
+
+List2.addBid({bidAmount : 100n, bidder :  Bob.username});
+List2.addBid({bidAmount : 12n, bidder :  Bob.username});
+
+console.log(List2);

@@ -34,11 +34,19 @@ class Buyer extends User {
         this.totalSpent = 0;
     }
     // Methods
-    getTotalSpent() {
+    get showTotalSpent() {
         return this.totalSpent;
     }
-    getMyBids() {
+    get showMyBids() {
         return this.myBids;
+    }
+    // Test
+    bidOnListing(newBid, listingID) {
+        // If successfull, add to the Listing and to the buyer
+        // try
+        // listingID.addBid({}) //////////////////////////////////////////////////////////////
+        // The validation should be done in the listing
+        return true; // Success
     }
 }
 exports.Buyer = Buyer;
@@ -52,6 +60,7 @@ class Listing {
         this.uniqueID = Listing.amountOfLists;
         this.description = description;
         Listing.amountOfLists++;
+        this.maxBid = { bidAmount: 12n, bidder: Bob.username };
     }
     get showUniqueID() {
         return this.uniqueID;
@@ -67,6 +76,43 @@ class Listing {
     }
     get showDescription() {
         return this.description;
+    }
+    addBid(newBid) {
+        if (this.isItHighestBid(newBid) && this.isTheirOnlyBid(newBid)) {
+            this.allBids.push(newBid);
+            this.maxBid = newBid;
+            return true;
+        }
+        return false;
+    }
+    isItHighestBid(newBid) {
+        if (newBid.bidAmount > this.maxBid.bidAmount) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    isTheirOnlyBid(newBid) {
+        let isOnly = false;
+        for (const el of this.allBids) {
+            if (newBid.bidder == el.bidder) {
+                isOnly = true;
+                break;
+            }
+        }
+        if (isOnly) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    removeBid() {
+        return this.allBids;
+    }
+    get showAllBids() {
+        return this.allBids;
     }
     publishListing() {
         this.state = "Active";
