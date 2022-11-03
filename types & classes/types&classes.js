@@ -52,15 +52,14 @@ class Buyer extends User {
 exports.Buyer = Buyer;
 class Listing {
     constructor(title, startingPrice = 0n, description = "", state = "Draft") {
-        this.title = title;
-        this.startingPrice = startingPrice;
-        this.state = state;
-        this.allBids = [];
-        this.startingPrice = startingPrice;
         this.uniqueID = Listing.amountOfLists;
+        this.state = state;
+        this.title = title;
         this.description = description;
+        this.startingPrice = startingPrice;
+        this.maxBid = { bidAmount: 0n, bidder: "" };
+        this.allBids = [];
         Listing.amountOfLists++;
-        this.maxBid = { bidAmount: 12n, bidder: Bob.username };
     }
     get showUniqueID() {
         return this.uniqueID;
@@ -94,10 +93,10 @@ class Listing {
         }
     }
     isTheirOnlyBid(newBid) {
-        let isOnly = false;
+        let isOnly = true;
         for (const el of this.allBids) {
             if (newBid.bidder == el.bidder) {
-                isOnly = true;
+                isOnly = false;
                 break;
             }
         }

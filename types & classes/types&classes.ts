@@ -83,7 +83,7 @@ export class Listing {
         this.uniqueID = Listing.amountOfLists;
         this.description = description;
         Listing.amountOfLists++;
-        this.maxBid = {bidAmount : 12n, bidder :  Bob.username};
+        this.maxBid = {bidAmount : 0n, bidder :  ""};
         
     }
     get showUniqueID(){
@@ -112,16 +112,16 @@ export class Listing {
     }
 
     isItHighestBid (newBid : Bid) : boolean { // Check if this is the highest bid
-        if (newBid.bidAmount > this.maxBid.bidAmount){        
+        if (newBid.bidAmount > this.maxBid.bidAmount){    
             return true;
         }
         else{ return false; }
     }
 
     isTheirOnlyBid (newBid : Bid) : boolean { // Go through the array and find if the new bidder has already bid.
-        let isOnly = false;
+        let isOnly = true;
         for (const el of this.allBids){
-            if (newBid.bidder == el.bidder){ isOnly = true; break;}
+            if (newBid.bidder == el.bidder){ isOnly = false; break;}
         }
         if (isOnly){
             return true;
